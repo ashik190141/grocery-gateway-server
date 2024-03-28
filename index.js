@@ -10,12 +10,10 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
+// https://grocery-store-frontend-two.vercel.app
 app.use(
   cors({
-    origin: [
-      // "https://ashik-feed-forward-foundation.netlify.app",
-        "http://localhost:3000",
-    ],
+    origin: "https://grocery-store-frontend-two.vercel.app",
     credentials: true,
   })
 );
