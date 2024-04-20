@@ -97,7 +97,7 @@ const getTopCategoryIntoDB = async (req, res) => {
 const getSingleProductFromDB = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
+    // console.log(id);
     const allData = await myModel.findById(id);
 
     res.json({
@@ -113,6 +113,47 @@ const getSingleProductFromDB = async (req, res) => {
   }
 };
 
+const deleteProductIntoDB = async (req,res) => {
+  try {
+    const id = req.params.id;
+    const deleteProduct = await myModel.findOneAndDelete({ _id: id });
+    console.log(deleteProduct);
+    res.json({
+      result: true,
+    });
+  } catch (error) {
+    res.json({
+      statusCode: status.INTERNAL_SERVER_ERROR,
+      message: "Failed to Delete data",
+    });
+  }
+}
+
+const updateProductIntoDB = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateInfo = req.body;
+    const query = { id:id };
+    const updatedDoc = {
+      name: updateInfo.name,
+      price: updateInfo.price,
+      rating: updateInfo.rating,
+      category: updateInfo.category,
+      description: updateInfo.description
+    }
+    await myModel.findOneAndUpdate(query, updatedDoc, { new: true });
+    res.json({
+      result: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      statusCode: status.INTERNAL_SERVER_ERROR,
+      message: "Failed to Update data",
+    });
+  }
+}
+
 module.exports = {
   productAddIntoDB,
   getProductFromDB,
@@ -120,4 +161,6 @@ module.exports = {
   getTrendingProductFromDB,
   getTopCategoryIntoDB,
   getSingleProductFromDB,
+  deleteProductIntoDB,
+  updateProductIntoDB
 };
