@@ -1,5 +1,6 @@
 const status = require("http-status");
 const myModel = require("./cart.model");
+const productModel = require("../product/product.model")
 
 const cartAddIntoDB = async (req, res) => {
     try {
@@ -31,21 +32,23 @@ const getCartFromDB = async (req, res) => {
       let id = allData[i].id;
       allId.push(id);
     }
-    // console.log(allId);
 
     const uniqueIDs = Array.from(new Set(allId));
-    // console.log("uniqueIDs",uniqueIDs);
     
     let result=[];
     for (let i = 0; i < uniqueIDs.length; i++){
         let id = uniqueIDs[i];
         let products = allData.filter(data => data.id == id);
+        let productInfo = await productModel.findOne({_id:id})
+        // console.log(productInfo);
         result.push({
             noOfProduct: products.length,
-            product: products[0] 
+            name: productInfo.name,
+            image: productInfo.image,
+            price: productInfo.price,
+            id: productInfo._id
         })
     }
-    // console.log(result);
 
     res.json({
       statusCode: status.OK,

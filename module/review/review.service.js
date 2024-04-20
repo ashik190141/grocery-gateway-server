@@ -40,7 +40,7 @@ const getReviewFromDB = async (req, res) => {
 
     res.json(result);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.json({
       statusCode: status.INTERNAL_SERVER_ERROR,
       message: "Failed to get data",

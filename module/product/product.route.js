@@ -3,6 +3,8 @@ const { addUserIntoDB, loginUser } = require("../auth/auth.service");
 
 const { cartAddIntoDB, getCartFromDB } = require("../cart/cart.service");
 
+const { orderAddIntoDB, getUserOrderProductFromDB, getAllOrderProductFromDB, updateOrderProductStatusIntoDB } = require("../order/order.service");
+
 const { reviewAddIntoDB, getReviewFromDB } = require("../review/review.service");
 
 const { productAddIntoDB, getProductFromDB, getFlashSaleFromDB, getTrendingProductFromDB, getTopCategoryIntoDB, getSingleProductFromDB, deleteProductIntoDB, updateProductIntoDB } = require("./product.service");
@@ -27,5 +29,10 @@ router.get("/addToCart/:email", getCartFromDB);
 
 router.post("/review", reviewAddIntoDB);
 router.get("/review/:id", getReviewFromDB);
+
+router.post("/order", orderAddIntoDB)
+router.get("/order/:email", getUserOrderProductFromDB);
+router.get("/order", getAllOrderProductFromDB);
+router.put("/delivered/:id", updateOrderProductStatusIntoDB);
 
 module.exports = router;
