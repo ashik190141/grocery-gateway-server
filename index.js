@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // https://grocery-store-frontend-two.vercel.app
 app.use(
   cors({
-    origin: "http://localhost:3000"
+    origin: "https://grocery-store-frontend-two.vercel.app",
   })
 );
 
