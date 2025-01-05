@@ -3,17 +3,21 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const router = require("./module/product/product.route");
+dotenv.config();
 const port = process.env.port || 5000;
 
-dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cookieParser());
+
 // https://grocery-store-frontend-two.vercel.app
 app.use(
   cors({
-    origin: "https://grocery-store-frontend-two.vercel.app",
+    origin: "http://localhost:3000",
+    credentials: true
   })
 );
 

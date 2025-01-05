@@ -21,10 +21,25 @@ const addUserIntoDB = async (req, res) => {
     const newUser = new myModel(userInfo);
     await newUser.save();
 
-    res.json({
-      result: true,
-      statusCode: status.CREATED,
-    });
+    const token = jwt.sign(
+      { email: email, role: 'user' },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.EXPIRES_IN,
+      }
+    );
+
+    res
+      .cookie("token", token, {
+        httpOnly: false,
+        secure: false,
+      })
+      .json({
+        result: true,
+        statusCode: status.CREATED,
+        token,
+      });
+    
   } catch (error) {
     console.log(error);
     res.json({
@@ -39,12 +54,14 @@ const loginUser = async (req, res) => {
   try {
     const user = await myModel.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email" });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
+    // console.log(user?.role);
+
     const token = jwt.sign(
       { email: user.email, role: user.role },
       process.env.JWT_SECRET,
@@ -53,13 +70,18 @@ const loginUser = async (req, res) => {
       }
     );
 
-    res.json({
-      success: true,
-      message: "Login successful",
-      token,
-    });
+    res
+      .cookie("token", token, {
+        httpOnly: false,
+        secure: false,
+      })
+      .json({
+        success: true,
+        message: "Login successful",
+        token,
+      });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.json({
       statusCode: status.INTERNAL_SERVER_ERROR,
       message: "Failed to login",

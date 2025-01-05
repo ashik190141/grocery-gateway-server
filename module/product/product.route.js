@@ -1,7 +1,7 @@
 const express = require("express");
 const { addUserIntoDB, loginUser } = require("../auth/auth.service");
 
-const { cartAddIntoDB, getCartFromDB } = require("../cart/cart.service");
+const { cartAddIntoDB, getCartFromDB, updateCart } = require("../cart/cart.service");
 
 const { orderAddIntoDB, getUserOrderProductFromDB, getAllOrderProductFromDB, updateOrderProductStatusIntoDB } = require("../order/order.service");
 
@@ -24,8 +24,9 @@ router.put("/product/:id", updateProductIntoDB);
 router.post("/register", addUserIntoDB);
 router.post("/login", loginUser);
 
-router.post("/addToCart", cartAddIntoDB);
+router.put("/addToCart", cartAddIntoDB);
 router.get("/addToCart/:email", getCartFromDB);
+router.put("/addToCart/:id", updateCart);
 
 router.post("/review", reviewAddIntoDB);
 router.get("/review/:id", getReviewFromDB);
