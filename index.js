@@ -16,7 +16,7 @@ app.use(cookieParser());
 // https://grocery-store-frontend-two.vercel.app
 app.use(
   cors({
-    origin: "https://grocery-store-frontend-two.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
